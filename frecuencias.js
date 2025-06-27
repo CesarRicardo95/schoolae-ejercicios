@@ -74,6 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const aceptarBtn = document.getElementById('aceptarBtn');
   const resultadoDiv = document.getElementById('resultado');
   const radios = document.querySelectorAll('input[name="nota"]');
+  let rondaActual = 1;
+  let aciertosTotales = 0;
+  const totalRondas = 10;
 
   function initEjercicio() {
     do {
@@ -101,34 +104,49 @@ document.addEventListener('DOMContentLoaded', () => {
       resultadoDiv.textContent = '';
     });
   });
+document.getElementById('ronda').textContent = `Ronda ${rondaActual} de ${totalRondas}`;
 
   aceptarBtn.addEventListener('click', () => {
-    const seleccionado = document.querySelector('input[name="nota"]:checked').value;
-    const freqSeleccionada = seleccionado === 'tono1' ? tono1Freq : tono2Freq;
-    const freqCorrecta = Math.max(tono1Freq, tono2Freq);
-    const correcta = tono1Freq > tono2Freq ? 'tono1' : 'tono2';
+  const seleccionado = document.querySelector('input[name="nota"]:checked').value;
+  const freqSeleccionada = seleccionado === 'tono1' ? tono1Freq : tono2Freq;
+  const freqCorrecta = Math.max(tono1Freq, tono2Freq);
+  const correcta = tono1Freq > tono2Freq ? 'tono1' : 'tono2';
 
-    const notaCorrecta = frecuenciaANota(freqCorrecta);
-    const notaSeleccionada = frecuenciaANota(freqSeleccionada);
+  const notaCorrecta = frecuenciaANota(freqCorrecta);
+  const notaSeleccionada = frecuenciaANota(freqSeleccionada);
 
-    const comparacion = freqSeleccionada === freqCorrecta
-      ? "más aguda"
-      : freqSeleccionada > freqCorrecta
-        ? "más aguda que la correcta"
-        : "más grave que la correcta";
+  const comparacion = freqSeleccionada === freqCorrecta
+    ? "más aguda"
+    : freqSeleccionada > freqCorrecta
+      ? "más aguda que la correcta"
+      : "más grave que la correcta";
 
-    if (seleccionado === correcta) {
-      resultadoDiv.textContent = `✅ ¡Correcto! Seleccionaste ${notaSeleccionada}, que es la más aguda.`;
-      resultadoDiv.style.color = "#4caf50";
-    } else {
-      resultadoDiv.textContent = `❌ Incorrecto. Seleccionaste ${notaSeleccionada}, que es ${comparacion}. La correcta era ${notaCorrecta}.`;
-      resultadoDiv.style.color = "#f44336";
-    }
+  if (seleccionado === correcta) {
+    resultadoDiv.textContent = `✅ ¡Correcto! Seleccionaste ${notaSeleccionada}, que es la más aguda.`;
+    resultadoDiv.style.color = "#4caf50";
+    aciertosTotales++;
+  } else {
+    resultadoDiv.textContent = `❌ Incorrecto. Seleccionaste ${notaSeleccionada}, que es ${comparacion}. La correcta era ${notaCorrecta}.`;
+    resultadoDiv.style.color = "#f44336";
+  }
 
+  rondaActual++;
+
+  if (rondaActual > totalRondas) {
+    setTimeout(() => {
+      resultadoDiv.innerHTML = `🎯 Ejercicio terminado.<br>Resultado: <strong>${aciertosTotales} de ${totalRondas} aciertos</strong>`;
+      resultadoDiv.style.color = "#000";
+
+      setTimeout(() => {
+        rondaActual = 1;
+        aciertosTotales = 0;
+        resultadoDiv.textContent = '';
+        initEjercicio();
+      }, 5000);
+    }, 2000);
+  } else {
     setTimeout(() => {
       initEjercicio();
-    }, 3000);
-  });
-
-  initEjercicio();
+    }, 2000);
+  }
 });
