@@ -1,41 +1,38 @@
 <!DOCTYPE html>
-<div id="ronda" style="font-weight: bold; font-size: 18px; margin-top: 10px;"></div>
-
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Ejercicio Frecuencias Aleatorias | Schoolae Cantorum</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Ejercicio de Frecuencias</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>Schoolae Cantorum</h1>
-    <p>Ejercicio: Identifica la nota más aguda</p>
+    <h1>Ejercicio de Frecuencias</h1>
+    <p>Escucha dos tonos y selecciona cuál es el más agudo.</p>
   </header>
 
   <section>
-    <h2>¿Cuál nota es más aguda?</h2>
-    
-    <div id="botones-tonos">
-      <button id="tono1Btn">Reproducir Tono 1</button>
-      <button id="tono2Btn">Reproducir Tono 2</button>
-    </div>
+    <div id="ronda" style="font-weight: bold; font-size: 18px; margin-top: 10px;"></div>
 
-    <div id="seleccion">
-      <label><input type="radio" name="nota" value="tono1" /> Tono 1</label>
-      <label><input type="radio" name="nota" value="tono2" /> Tono 2</label>
+    <button id="tono1Btn">Reproducir Tono 1</button>
+    <button id="tono2Btn">Reproducir Tono 2</button>
+
+    <div style="margin-top: 20px;">
+      <label><input type="radio" name="nota" value="tono1"> Tono 1</label>
+      <label><input type="radio" name="nota" value="tono2"> Tono 2</label>
     </div>
 
     <button id="aceptarBtn" disabled>Aceptar</button>
 
-    <div id="resultado"></div>
+    <div id="resultado" style="margin-top: 20px; font-size: 20px; min-height: 40px;"></div>
   </section>
 
   <footer>
-    <p>&copy; 2025 Schoolae Cantorum - Todos los derechos reservados</p>
+    <p>&copy; 2025 Schoolae Cantorum</p>
   </footer>
 
   <script src="frecuencias.js"></script>
 </body>
 </html>
+
 
