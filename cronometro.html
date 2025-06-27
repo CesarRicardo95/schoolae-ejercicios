@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Schoolae Cantorum - Precisión Mental</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🎵 Schoolae Cantorum</h1>
+    <p>Ejercicio de precisión mental - Convento Ades</p>
+  </header>
+
+  <section id="cronometro">
+    <h2>⏱️ Ejercicio de Tiempo Interno</h2>
+    <p>
+      Presiona "Iniciar", espera mentalmente 10 segundos, y luego presiona "Detener".<br>
+      La primera ronda mostrará el cronómetro. La siguiente será a ciegas.
+    </p>
+
+    <div id="reloj">0.00 s</div>
+    <button onclick="iniciarCrono()">Iniciar</button>
+    <button onclick="detenerCrono()">Detener</button>
+    <p id="resultado"></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Schoolae Cantorum - Convento Ades</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
