@@ -1,39 +1,33 @@
-let inicio, intervalo, visible = true;
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Schoolae Cantorum - Precisión Mental</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🎵 Schoolae Cantorum</h1>
+    <p>Ejercicio de precisión mental - Convento Ades</p>
+  </header>
 
-function iniciarCrono() {
-  clearInterval(intervalo);
-  document.getElementById("resultado").innerText = "";
+  <section id="cronometro">
+    <h2>⏱️ Ejercicio de Tiempo Interno</h2>
+    <p>
+      Presiona "Iniciar", espera mentalmente 10 segundos, y luego presiona "Detener".<br>
+      La primera ronda mostrará el cronómetro. La siguiente será a ciegas.
+    </p>
 
-  const reloj = document.getElementById("reloj");
+    <div id="reloj">0.00 s</div>
+    <button onclick="iniciarCrono()">Iniciar</button>
+    <button onclick="detenerCrono()">Detener</button>
+    <p id="resultado"></p>
+  </section>
 
-  if (visible) {
-    reloj.style.visibility = "visible";
-    reloj.classList.remove("oculto");
-  } else {
-    reloj.style.visibility = "hidden"; // Oculto visualmente
-    reloj.classList.add("oculto");     // Se mantiene rojo cuando reaparece
-  }
+  <footer>
+    <p>&copy; 2025 Schoolae Cantorum - Convento Ades</p>
+  </footer>
 
-  reloj.innerText = "0.00 s";
-
-  inicio = Date.now();
-
-  intervalo = setInterval(() => {
-    let tiempo = (Date.now() - inicio) / 1000;
-    reloj.innerText = tiempo.toFixed(2) + " s";
-  }, 50);
-}
-
-function detenerCrono() {
-  clearInterval(intervalo);
-  const reloj = document.getElementById("reloj");
-  let final = (Date.now() - inicio) / 1000;
-
-  reloj.style.visibility = "visible"; // Siempre visible al detener
-  reloj.innerText = final.toFixed(2) + " s";
-
-  document.getElementById("resultado").innerText =
-    `⏳ Tiempo estimado: ${final.toFixed(2)} segundos`;
-
-  visible = !visible; // Alterna visibilidad para siguiente intento
-}
+  <script src="script.js"></script>
+</body>
+</html>
