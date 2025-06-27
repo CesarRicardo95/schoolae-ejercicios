@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Tabla con notas y frecuencias para referencia (Do3 = 130.81 Hz a Do5 = 523.25 Hz)
+  // Lista de notas musicales para asignar nombres a frecuencias
   const notasTabla = [
     { nombre: "Do3", frecuencia: 130.81 },
     { nombre: "Re3", frecuencia: 146.83 },
@@ -18,11 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
     { nombre: "Do5", frecuencia: 523.25 },
   ];
 
-  // Buscar la nota más cercana a una frecuencia
+  // Devuelve el nombre de la nota más cercana a una frecuencia
   function frecuenciaANota(freq) {
     let notaCercana = notasTabla[0];
     let minDif = Math.abs(freq - notaCercana.frecuencia);
-
     for (const nota of notasTabla) {
       const dif = Math.abs(freq - nota.frecuencia);
       if (dif < minDif) {
@@ -33,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return notaCercana.nombre;
   }
 
+  // Genera una frecuencia entre 130 Hz y 523 Hz
   function generarFrecuenciaAleatoria() {
     return Math.random() * (523.25 - 130.81) + 130.81;
   }
@@ -51,52 +51,51 @@ document.addEventListener('DOMContentLoaded', () => {
       oscillator = null;
       clearTimeout(oscillatorTimeout);
     }
+
     oscillator = audioCtx.createOscillator();
     oscillator.type = 'sine';
     oscillator.frequency.setValueAtTime(frecuencia, audioCtx.currentTime);
-    oscillator.connect(audioCtx.destination);
-    oscillator.start();
 
-    oscillatorTimeout = setTimeout(() => {
-      if (oscillator) {
-        oscillator.stop();
-        oscillator.disconnect();
-        oscillator = null;
-      }
-    }, 1500);
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime); // volumen moderado
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 1.5);
   }
 
+  // Variables del ejercicio
   let tono1Freq = 0;
   let tono2Freq = 0;
-
-  const btnTono1 = document.getElementById('tono1Btn');
-  const btnTono2 = document.getElementById('tono2Btn');
-  const aceptarBtn = document.getElementById('aceptarBtn');
-  const resultadoDiv = document.getElementById('resultado');
-  const radios = document.querySelectorAll('input[name="nota"]');
   let rondaActual = 1;
   let aciertosTotales = 0;
   const totalRondas = 10;
 
+  // Referencias al DOM
+  const btnTono1 = document.getElementById('tono1Btn');
+  const btnTono2 = document.getElementById('tono2Btn');
+  const aceptarBtn = document.getElementById('aceptarBtn');
+  const resultadoDiv = document.getElementById('resultado');
+  const rondaDiv = document.getElementById('ronda');
+  const radios = document.querySelectorAll('input[name="nota"]');
+
   function initEjercicio() {
+    // Asegura que las frecuencias sean diferentes
     do {
       tono1Freq = generarFrecuenciaAleatoria();
       tono2Freq = generarFrecuenciaAleatoria();
-    } while (Math.abs(tono1Freq - tono2Freq) < 15);
+    } while (Math.abs(tono1Freq - tono2Freq) < 10);
 
     aceptarBtn.disabled = true;
     resultadoDiv.textContent = '';
     resultadoDiv.style.color = '#333';
-    radios.forEach(radio => (radio.checked = false));
+    radios.forEach(r => r.checked = false);
+    rondaDiv.textContent = `Ronda ${rondaActual} de ${totalRondas}`;
   }
 
-  btnTono1.addEventListener('click', () => {
-    playTone(tono1Freq);
-  });
-
-  btnTono2.addEventListener('click', () => {
-    playTone(tono2Freq);
-  });
+  btnTono1.addEventListener('click', () => playTone(tono1Freq));
+  btnTono2.addEventListener('click', () => playTone(tono2Freq));
 
   radios.forEach(radio => {
     radio.addEventListener('change', () => {
@@ -104,49 +103,49 @@ document.addEventListener('DOMContentLoaded', () => {
       resultadoDiv.textContent = '';
     });
   });
-document.getElementById('ronda').textContent = `Ronda ${rondaActual} de ${totalRondas}`;
 
   aceptarBtn.addEventListener('click', () => {
-  const seleccionado = document.querySelector('input[name="nota"]:checked').value;
-  const freqSeleccionada = seleccionado === 'tono1' ? tono1Freq : tono2Freq;
-  const freqCorrecta = Math.max(tono1Freq, tono2Freq);
-  const correcta = tono1Freq > tono2Freq ? 'tono1' : 'tono2';
+    const seleccionado = document.querySelector('input[name="nota"]:checked').value;
+    const freqSeleccionada = seleccionado === 'tono1' ? tono1Freq : tono2Freq;
+    const freqCorrecta = Math.max(tono1Freq, tono2Freq);
+    const correcta = tono1Freq > tono2Freq ? 'tono1' : 'tono2';
 
-  const notaCorrecta = frecuenciaANota(freqCorrecta);
-  const notaSeleccionada = frecuenciaANota(freqSeleccionada);
+    const notaCorrecta = frecuenciaANota(freqCorrecta);
+    const notaSeleccionada = frecuenciaANota(freqSeleccionada);
 
-  const comparacion = freqSeleccionada === freqCorrecta
-    ? "más aguda"
-    : freqSeleccionada > freqCorrecta
-      ? "más aguda que la correcta"
-      : "más grave que la correcta";
+    const comparacion = freqSeleccionada === freqCorrecta
+      ? "más aguda"
+      : freqSeleccionada > freqCorrecta
+        ? "más aguda que la correcta"
+        : "más grave que la correcta";
 
-  if (seleccionado === correcta) {
-    resultadoDiv.textContent = `✅ ¡Correcto! Seleccionaste ${notaSeleccionada}, que es la más aguda.`;
-    resultadoDiv.style.color = "#4caf50";
-    aciertosTotales++;
-  } else {
-    resultadoDiv.textContent = `❌ Incorrecto. Seleccionaste ${notaSeleccionada}, que es ${comparacion}. La correcta era ${notaCorrecta}.`;
-    resultadoDiv.style.color = "#f44336";
-  }
+    if (seleccionado === correcta) {
+      resultadoDiv.textContent = `✅ ¡Correcto! Seleccionaste ${notaSeleccionada}, que es la más aguda.`;
+      resultadoDiv.style.color = "#4caf50";
+      aciertosTotales++;
+    } else {
+      resultadoDiv.textContent = `❌ Incorrecto. Seleccionaste ${notaSeleccionada}, que es ${comparacion}. La correcta era ${notaCorrecta}.`;
+      resultadoDiv.style.color = "#f44336";
+    }
 
-  rondaActual++;
+    rondaActual++;
 
-  if (rondaActual > totalRondas) {
-    setTimeout(() => {
-      resultadoDiv.innerHTML = `🎯 Ejercicio terminado.<br>Resultado: <strong>${aciertosTotales} de ${totalRondas} aciertos</strong>`;
-      resultadoDiv.style.color = "#000";
-
+    if (rondaActual > totalRondas) {
       setTimeout(() => {
-        rondaActual = 1;
-        aciertosTotales = 0;
-        resultadoDiv.textContent = '';
-        initEjercicio();
-      }, 5000);
-    }, 2000);
-  } else {
-    setTimeout(() => {
-      initEjercicio();
-    }, 2000);
-  }
+        resultadoDiv.innerHTML = `🎯 Fin del ejercicio.<br>Resultado: <strong>${aciertosTotales} de ${totalRondas} aciertos</strong>`;
+        resultadoDiv.style.color = "#000";
+        setTimeout(() => {
+          rondaActual = 1;
+          aciertosTotales = 0;
+          resultadoDiv.textContent = '';
+          initEjercicio();
+        }, 5000);
+      }, 2000);
+    } else {
+      setTimeout(initEjercicio, 2000);
+    }
+  });
+
+  initEjercicio();
 });
+
