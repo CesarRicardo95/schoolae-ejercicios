@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Schoolae Cantorum - Toques a Tempo</title>
+  <link rel="stylesheet" href="bpm.css" />
+</head>
+<body>
+  <header>
+    <h1>🎵 Schoolae Cantorum</h1>
+    <p>Ejercicio: Toques a Tempo (negras, 8 beats)</p>
+  </header>
+
+  <section id="ejercicio">
+    <label for="bpm">Selecciona BPM:</label>
+    <input type="number" id="bpm" value="60" min="40" max="200" />
+    <button id="startBtn">Iniciar ejercicio</button>
+
+    <div id="beat-indicator">Esperando...</div>
+    <div id="toque-btn-container">
+      <button id="toqueBtn" disabled>Haz clic aquí en cada beat</button>
+    </div>
+
+    <div id="resultado"></div>
+    <div id="grafico"></div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Schoolae Cantorum - Convento Ades</p>
+  </footer>
+
+  <script src="bpm.js"></script>
+</body>
+</html>
