@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ejercicio de Acordes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Ejercicio de Acordes</h1>
+    <p>Escucha el acorde y selecciona si es Mayor o Menor.</p>
+  </header>
+
+  <section>
+    <div id="ronda" style="font-weight: bold; font-size: 18px; margin-top: 10px;"></div>
+
+    <button id="reproducirBtn">Reproducir Acorde</button>
+
+    <div style="margin-top: 20px;">
+      <label><input type="radio" name="tipo" value="mayor" /> Mayor</label>
+      <label><input type="radio" name="tipo" value="menor" /> Menor</label>
+    </div>
+
+    <button id="aceptarBtn" disabled>Aceptar</button>
+
+    <div id="resultado" style="margin-top: 20px; font-size: 20px; min-height: 40px;"></div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Schoolae Cantorum</p>
+  </footer>
+
+  <script src="acordes.js"></script>
+</body>
+</html>
