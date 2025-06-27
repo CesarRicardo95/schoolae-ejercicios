@@ -1,36 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Cronómetro Mental | Schoolae Cantorum</title>
-  <link rel="stylesheet" href="cronometro.css" />
+  <meta charset="UTF-8">
+  <title>Schoolae Cantorum - Precisión Mental</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>Schoolae Cantorum</h1>
-    <p>Ejercicio: Cronómetro Mental</p>
+    <h1>🎵 Schoolae Cantorum</h1>
+    <p>Ejercicio de precisión mental - Convento Ades</p>
   </header>
 
-  <section>
-    <label for="bpm">BPM:</label>
-    <input type="number" id="bpm" value="60" min="40" max="200" />
+  <section id="cronometro">
+    <h2>⏱️ Ejercicio de Tiempo Interno</h2>
+    <p>
+      Presiona "Iniciar", espera mentalmente 10 segundos, y luego presiona "Detener".<br>
+      La primera ronda mostrará el cronómetro. La siguiente será a ciegas.
+    </p>
 
-    <div id="toque-btn-container">
-      <button id="startBtn">Iniciar</button>
-      <button id="stopBtn" disabled>Detener</button>
-      <button id="clickBtn" disabled>Marcar Pulso</button>
-    </div>
-
-    <div id="reloj" class="oculto">00:00.000</div>
-
-    <div id="resultado"></div>
+    <div id="reloj">0.00 s</div>
+    <button onclick="iniciarCrono()">Iniciar</button>
+    <button onclick="detenerCrono()">Detener</button>
+    <p id="resultado"></p>
   </section>
 
   <footer>
-    <p>&copy; 2025 Schoolae Cantorum - Todos los derechos reservados</p>
+    <p>&copy; 2025 Schoolae Cantorum - Convento Ades</p>
   </footer>
 
-  <script src="js/cronometro.js"></script>
+  <script src="cronometro.js"></script>
 </body>
 </html>
 
