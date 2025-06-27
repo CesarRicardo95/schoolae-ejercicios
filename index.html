@@ -2,32 +2,35 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Schoolae Cantorum - Precisión Mental</title>
+  <title>Schoolae Cantorum - Ejercicios</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>🎵 Schoolae Cantorum</h1>
-    <p>Ejercicio de precisión mental - Convento Ades</p>
+    <h1>Schoolae Cantorum</h1>
+    <p>Escuela de batería ubicada en el convento de Ades. Ejercicios de percepción, ritmo y precisión mental.</p>
   </header>
 
-  <section id="cronometro">
-    <h2>⏱️ Ejercicio de Tiempo Interno</h2>
-    <p>
-      Presiona "Iniciar", espera mentalmente 10 segundos, y luego presiona "Detener".<br>
-      La primera ronda mostrará el cronómetro. La siguiente será a ciegas.
-    </p>
-
-    <div id="reloj">0.00 s</div>
-    <button onclick="iniciarCrono()">Iniciar</button>
-    <button onclick="detenerCrono()">Detener</button>
-    <p id="resultado"></p>
-  </section>
+  <main>
+    <section class="ejercicios">
+      <h2>Ejercicios disponibles</h2>
+      <div class="grid">
+        <a class="ejercicio" href="ejercicio-cronometro.html">Cronómetro Mental</a>
+        <a class="ejercicio" href="ejercicio-bpm.html">Ejercicio BPM (clic a tempo)</a>
+        <a class="ejercicio" href="#">Ejercicio 3 (vacío)</a>
+        <a class="ejercicio" href="#">Ejercicio 4 (vacío)</a>
+        <a class="ejercicio" href="#">Ejercicio 5 (vacío)</a>
+        <a class="ejercicio" href="#">Ejercicio 6 (vacío)</a>
+        <a class="ejercicio" href="#">Ejercicio 7 (vacío)</a>
+        <a class="ejercicio" href="#">Ejercicio 8 (vacío)</a>
+        <a class="ejercicio" href="#">Ejercicio 9 (vacío)</a>
+        <a class="ejercicio" href="#">Ejercicio 10 (vacío)</a>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    <p>&copy; 2025 Schoolae Cantorum - Convento Ades</p>
+    <p>&copy; 2025 Schoolae Cantorum - Todos los derechos reservados</p>
   </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
