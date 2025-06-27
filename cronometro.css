@@ -8,38 +8,43 @@ body {
 header, footer {
   background: #2e3d4f;
   color: white;
-  padding: 10px;
+  padding: 15px;
   text-align: center;
   border-radius: 8px;
 }
 
 section {
   background: white;
-  padding: 15px;
-  margin-top: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 5px #ccc;
+  padding: 20px;
+  margin-top: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #bbb;
 }
 
 button {
-  margin: 10px 5px;
-  padding: 15px 30px;  /* Aumentado el tamaño */
-  font-size: 20px;     /* Letra más grande */
+  margin: 12px 8px;
+  padding: 20px 40px;        /* MÁS grande */
+  font-size: 24px;           /* MÁS grande */
   cursor: pointer;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background-color: #2e3d4f;
   color: white;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.1s ease;
 }
 
 button:hover {
   background-color: #445b75;
+  transform: scale(1.05);   /* efecto leve de agrandamiento */
+}
+
+button:active {
+  transform: scale(0.98);
 }
 
 #reloj {
-  font-size: 48px;
-  margin: 20px 0;
+  font-size: 56px;
+  margin: 25px 0;
   font-weight: bold;
   color: #222;
   transition: color 0.3s;
@@ -48,3 +53,4 @@ button:hover {
 #reloj.oculto {
   color: red; /* rojo cuando está oculto */
 }
+
