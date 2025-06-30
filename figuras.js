@@ -1,14 +1,18 @@
+// figuras.js
+
+const bpmInput = document.getElementById("bpm");
 const startBtn = document.getElementById("startBtn");
+const replayBtn = document.getElementById("replayBtn");
 const nextBtn = document.getElementById("nextBtn");
 const submitBtn = document.getElementById("submitBtn");
-const bpmInput = document.getElementById("bpm");
-const resultadoDiv = document.getElementById("resultado");
-
-const bloques = Array.from(document.querySelectorAll(".bloque"));
-const selects = Array.from(document.querySelectorAll(".select-figura"));
+const resultado = document.getElementById("resultado");
+const bloques = document.querySelectorAll(".bloque");
+const selects = document.querySelectorAll(".select-figura");
+const bpmLinea = document.getElementById("bpm-linea");
+const figuraLinea = document.getElementById("figura-linea");
 
 const figuras = ["redonda", "blanca", "negra", "corchea", "semicorchea"];
-const valores = {
+const duraciones = {
   redonda: 4,
   blanca: 2,
   negra: 1,
@@ -17,127 +21,116 @@ const valores = {
 };
 
 let secuencia = [];
-let rondaActual = 0;
-const totalRondas = 5;
-let resultados = [];
+let ronda = 0;
+let totalRondas = 5;
+let aciertos = 0;
 
-function esperar(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-// Genera una secuencia de 4 figuras aleatorias
 function generarSecuencia() {
-  return Array.from({ length: 4 }, () => figuras[Math.floor(Math.random() * figuras.length)]);
-}
-
-// Parpadea un bloque según la figura y BPM
-async function animarBloque(bloque, figura, bpm) {
-  const pulsoMs = 60000 / bpm;
-  const pulsos = valores[figura];
-
-  // Duración total del bloque: 4 pulsos (como base)
-  const duracionBloque = pulsoMs * 4;
-
-  // Tiempo para cada parpadeo:
-  const intervalo = duracionBloque / pulsos;
-
-  for (let i = 0; i < pulsos; i++) {
-    bloque.classList.add("activo");
-    await esperar(intervalo / 2);
-    bloque.classList.remove("activo");
-    await esperar(intervalo / 2);
+  secuencia = [];
+  for (let i = 0; i < 4; i++) {
+    const figura = figuras[Math.floor(Math.random() * figuras.length)];
+    secuencia.push(figura);
   }
 }
 
-// Reproduce toda la secuencia con animación
-async function reproducirSecuencia() {
+function generarLineas(pulsosTotales) {
+  bpmLinea.innerHTML = "";
+  for (let i = 0; i < pulsosTotales; i++) {
+    const p = document.createElement("div");
+    p.classList.add("pulso");
+    bpmLinea.appendChild(p);
+  }
+
+  figuraLinea.innerHTML = "";
+  for (let figura of secuencia) {
+    const pulsos = duraciones[figura] / 0.25; // porque semicorchea es 0.25 = 1 pulso visual
+    for (let i = 0; i < pulsos; i++) {
+      const f = document.createElement("div");
+      f.classList.add("pulso-figura");
+      figuraLinea.appendChild(f);
+    }
+  }
+}
+
+function iluminarSecuencia() {
   const bpm = parseInt(bpmInput.value);
-  startBtn.disabled = true;
-  submitBtn.disabled = true;
-  nextBtn.disabled = true;
-  selects.forEach((sel) => (sel.disabled = true));
-  resultadoDiv.textContent = "";
+  const intervalo = 60000 / bpm; // duración de una negra en ms
 
-  for (let i = 0; i < secuencia.length; i++) {
-    await animarBloque(bloques[i], secuencia[i], bpm);
-    await esperar(300); // pausa corta entre bloques
-  }
+  const pulsos = secuencia.reduce((acc, figura) => acc + duraciones[figura] / 0.25, 0);
+  generarLineas(pulsos);
 
-  selects.forEach((sel) => (sel.disabled = false));
-  submitBtn.disabled = false;
-  startBtn.disabled = true;
-  nextBtn.disabled = true;
+  const todosPulsos = bpmLinea.querySelectorAll(".pulso");
+  const todosFiguras = figuraLinea.querySelectorAll(".pulso-figura");
+
+  let index = 0;
+  const intervalId = setInterval(() => {
+    if (index > 0) {
+      todosPulsos[index - 1].classList.remove("activo");
+      todosFiguras[index - 1].classList.remove("activo");
+    }
+    if (index < todosPulsos.length) {
+      todosPulsos[index].classList.add("activo");
+      todosFiguras[index].classList.add("activo");
+      index++;
+    } else {
+      clearInterval(intervalId);
+      activarSelects(true);
+      submitBtn.disabled = false;
+      replayBtn.disabled = false;
+    }
+  }, intervalo * 0.25); // semicorchea = 1 pulso base
 }
 
-// Evalúa las respuestas y muestra resultado
-function evaluarRespuestas() {
-  let aciertos = 0;
-  let textoResultado = "";
-
-  for (let i = 0; i < secuencia.length; i++) {
-    const correcta = secuencia[i];
-    const respuesta = selects[i].value;
-    const acertado = correcta === respuesta;
-    if (acertado) aciertos++;
-
-    textoResultado += `Bloque ${i + 1}: Correcto = ${correcta}, Tu respuesta = ${respuesta || "(sin seleccionar)"} - ${
-      acertado ? "✅" : "❌"
-    }\n`;
-  }
-
-  textoResultado += `\nAciertos esta ronda: ${aciertos} / ${secuencia.length}`;
-
-  resultados.push(aciertos);
-
-  resultadoDiv.textContent = textoResultado;
-
-  startBtn.disabled = true;
-  submitBtn.disabled = true;
-  nextBtn.disabled = false;
-  selects.forEach((sel) => (sel.disabled = true));
+function activarSelects(estado) {
+  selects.forEach((sel) => (sel.disabled = !estado));
 }
 
-// Prepara todo para la siguiente ronda
-function siguienteRonda() {
-  rondaActual++;
-  if (rondaActual >= totalRondas) {
-    mostrarResultadosFinales();
-    return;
-  }
-
-  secuencia = generarSecuencia();
-  resultadoDiv.textContent = "";
-  selects.forEach((sel) => {
-    sel.disabled = true;
-    sel.value = "";
+function verificarRespuesta() {
+  let correctos = 0;
+  selects.forEach((sel, i) => {
+    if (sel.value === secuencia[i]) {
+      correctos++;
+    }
   });
+  aciertos += correctos === 4 ? 1 : 0;
+  resultado.textContent = `Ronda ${ronda + 1}: ${correctos} correctos`;
+  nextBtn.disabled = false;
   submitBtn.disabled = true;
-  nextBtn.disabled = true;
-  startBtn.disabled = false;
+  activarSelects(false);
 }
 
-// Muestra resultados finales de todas las rondas
-function mostrarResultadosFinales() {
-  const suma = resultados.reduce((a, b) => a + b, 0);
-  const total = totalRondas * secuencia.length;
-  resultadoDiv.textContent = `¡Ejercicio terminado!\n\nAciertos totales: ${suma} de ${total} (${((suma / total) * 100).toFixed(2)}%)`;
-  startBtn.disabled = true;
+startBtn.onclick = () => {
+  ronda = 0;
+  aciertos = 0;
+  iniciarRonda();
+};
+
+function iniciarRonda() {
+  resultado.textContent = "";
+  generarSecuencia();
+  selects.forEach((sel) => (sel.value = ""));
+  activarSelects(false);
   submitBtn.disabled = true;
+  replayBtn.disabled = true;
   nextBtn.disabled = true;
-  selects.forEach((sel) => (sel.disabled = true));
+  iluminarSecuencia();
 }
 
-startBtn.addEventListener("click", () => {
-  rondaActual = 0;
-  resultados = [];
-  secuencia = generarSecuencia();
-  reproducirSecuencia();
-});
+replayBtn.onclick = () => {
+  activarSelects(false);
+  submitBtn.disabled = true;
+  replayBtn.disabled = true;
+  iluminarSecuencia();
+};
 
-submitBtn.addEventListener("click", () => {
-  evaluarRespuestas();
-});
+nextBtn.onclick = () => {
+  ronda++;
+  if (ronda < totalRondas) {
+    iniciarRonda();
+  } else {
+    resultado.textContent = `¡Completado! Aciertos: ${aciertos} de ${totalRondas}`;
+    startBtn.disabled = false;
+  }
+};
 
-nextBtn.addEventListener("click", () => {
-  siguienteRonda();
-});
+submitBtn.onclick = verificarRespuesta;
