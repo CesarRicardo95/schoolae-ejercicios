@@ -15,10 +15,17 @@
     <input type="number" id="bpm" value="60" min="40" max="160" />
 
     <button id="startBtn">Iniciar Ronda</button>
+    <button id="replayBtn" disabled>Repetir Secuencia</button>
     <button id="nextBtn" disabled>Siguiente Ronda</button>
 
+    <div id="timeline">
+      <div id="timeline-indicadores">
+        <div id="bpm-linea" class="linea-pulsos"></div>
+        <div id="figura-linea" class="linea-figuras"></div>
+      </div>
+    </div>
+
     <div id="bloques-container">
-      <!-- Bloques con figura y opciones -->
       <div class="bloque-container" data-index="0">
         <div class="bloque" id="bloque0"></div>
         <select class="select-figura" disabled>
@@ -30,7 +37,6 @@
           <option value="semicorchea">Semicorchea</option>
         </select>
       </div>
-
       <div class="bloque-container" data-index="1">
         <div class="bloque" id="bloque1"></div>
         <select class="select-figura" disabled>
@@ -42,7 +48,6 @@
           <option value="semicorchea">Semicorchea</option>
         </select>
       </div>
-
       <div class="bloque-container" data-index="2">
         <div class="bloque" id="bloque2"></div>
         <select class="select-figura" disabled>
@@ -54,7 +59,6 @@
           <option value="semicorchea">Semicorchea</option>
         </select>
       </div>
-
       <div class="bloque-container" data-index="3">
         <div class="bloque" id="bloque3"></div>
         <select class="select-figura" disabled>
@@ -76,4 +80,5 @@
   <script src="figuras.js"></script>
 </body>
 </html>
+
 
