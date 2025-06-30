@@ -1,32 +1,79 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Ejercicio de Ritmo Visual</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Reconocimiento de Ritmo Visual</title>
+  <link rel="stylesheet" href="ritmo-visual.css">
 </head>
 <body>
   <header>
-    <h1>Ejercicio de Ritmo Visual</h1>
-    <p>Observa la secuencia y luego elige la opción correcta.</p>
+    <h1>Ejercicio: Reconocimiento de Ritmo Visual</h1>
+    <p>Selecciona el BPM, observa la secuencia y selecciona los ritmos correspondientes.</p>
   </header>
 
   <section>
-    <div id="secuencia-animada" class="secuencia"></div>
+    <label for="bpm">BPM:</label>
+    <input type="number" id="bpm" value="60" min="40" max="160">
+    <button id="startBtn">Iniciar</button>
+    <button id="repeatBtn" disabled>Repetir Secuencia</button>
+  </section>
 
-    <button id="mostrarOpcionesBtn">Mostrar Opciones</button>
+  <section id="visual">
+    <div class="bloque" id="b0"></div>
+    <div class="bloque" id="b1"></div>
+    <div class="bloque" id="b2"></div>
+    <div class="bloque" id="b3"></div>
+  </section>
 
-    <div id="opciones" class="opciones" style="display:none;">
-      <!-- Aquí se cargan las opciones para elegir -->
+  <section id="respuestas" class="oculto">
+    <h2>Selecciona la figura para cada bloque</h2>
+    <div class="respuestas-container">
+      <select data-index="0">
+        <option value="">---</option>
+        <option value="R">Redonda</option>
+        <option value="B">Blanca</option>
+        <option value="N">Negra</option>
+        <option value="C">Corchea</option>
+        <option value="S">Semicorchea</option>
+      </select>
+      <select data-index="1">
+        <option value="">---</option>
+        <option value="R">Redonda</option>
+        <option value="B">Blanca</option>
+        <option value="N">Negra</option>
+        <option value="C">Corchea</option>
+        <option value="S">Semicorchea</option>
+      </select>
+      <select data-index="2">
+        <option value="">---</option>
+        <option value="R">Redonda</option>
+        <option value="B">Blanca</option>
+        <option value="N">Negra</option>
+        <option value="C">Corchea</option>
+        <option value="S">Semicorchea</option>
+      </select>
+      <select data-index="3">
+        <option value="">---</option>
+        <option value="R">Redonda</option>
+        <option value="B">Blanca</option>
+        <option value="N">Negra</option>
+        <option value="C">Corchea</option>
+        <option value="S">Semicorchea</option>
+      </select>
     </div>
+    <button id="submitBtn">Enviar Respuesta</button>
+  </section>
 
-    <div id="resultado"></div>
+  <section id="resultadoFinal" class="oculto">
+    <h2>Resultados</h2>
+    <div id="resultados"></div>
   </section>
 
   <footer>
-    <p>&copy; 2025 Schoolae Cantorum</p>
+    <p>Schoolae Cantorum &copy; 2025</p>
   </footer>
 
-  <script src="ritmo.js"></script>
+  <script src="ritmo-visual.js"></script>
 </body>
 </html>
+
