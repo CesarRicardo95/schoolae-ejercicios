@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Ejercicio de Figuras</title>
-  <link rel="stylesheet" href="figuras.css">
+  <meta charset="UTF-8" />
+  <title>Ejercicio Figuras Rítmicas</title>
+  <link rel="stylesheet" href="figuras.css" />
 </head>
 <body>
   <header>
@@ -12,18 +12,68 @@
 
   <section>
     <label for="bpm">BPM:</label>
-    <input type="number" id="bpm" value="60" min="40" max="160">
-    <button id="startBtn">Iniciar</button>
-    <button id="repeatBtn" disabled>Repetir</button>
+    <input type="number" id="bpm" value="60" min="40" max="160" />
+
+    <button id="startBtn">Iniciar Ronda</button>
+    <button id="nextBtn" disabled>Siguiente Ronda</button>
 
     <div id="bloques-container">
-      <div class="bloque" id="bloque0"></div>
-      <div class="bloque" id="bloque1"></div>
-      <div class="bloque" id="bloque2"></div>
-      <div class="bloque" id="bloque3"></div>
+      <!-- Bloques con figura y opciones -->
+      <div class="bloque-container" data-index="0">
+        <div class="bloque" id="bloque0"></div>
+        <select class="select-figura" disabled>
+          <option value="">Selecciona</option>
+          <option value="redonda">Redonda</option>
+          <option value="blanca">Blanca</option>
+          <option value="negra">Negra</option>
+          <option value="corchea">Corchea</option>
+          <option value="semicorchea">Semicorchea</option>
+        </select>
+      </div>
+
+      <div class="bloque-container" data-index="1">
+        <div class="bloque" id="bloque1"></div>
+        <select class="select-figura" disabled>
+          <option value="">Selecciona</option>
+          <option value="redonda">Redonda</option>
+          <option value="blanca">Blanca</option>
+          <option value="negra">Negra</option>
+          <option value="corchea">Corchea</option>
+          <option value="semicorchea">Semicorchea</option>
+        </select>
+      </div>
+
+      <div class="bloque-container" data-index="2">
+        <div class="bloque" id="bloque2"></div>
+        <select class="select-figura" disabled>
+          <option value="">Selecciona</option>
+          <option value="redonda">Redonda</option>
+          <option value="blanca">Blanca</option>
+          <option value="negra">Negra</option>
+          <option value="corchea">Corchea</option>
+          <option value="semicorchea">Semicorchea</option>
+        </select>
+      </div>
+
+      <div class="bloque-container" data-index="3">
+        <div class="bloque" id="bloque3"></div>
+        <select class="select-figura" disabled>
+          <option value="">Selecciona</option>
+          <option value="redonda">Redonda</option>
+          <option value="blanca">Blanca</option>
+          <option value="negra">Negra</option>
+          <option value="corchea">Corchea</option>
+          <option value="semicorchea">Semicorchea</option>
+        </select>
+      </div>
     </div>
+
+    <button id="submitBtn" disabled>Enviar Respuesta</button>
+
+    <div id="resultado"></div>
   </section>
 
   <script src="figuras.js"></script>
 </body>
 </html>
+
