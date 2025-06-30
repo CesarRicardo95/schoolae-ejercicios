@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejercicio de Figuras</title>
+  <link rel="stylesheet" href="figuras.css">
+</head>
+<body>
+  <header>
+    <h1>Ejercicio: Figuras Rítmicas</h1>
+  </header>
+
+  <section>
+    <label for="bpm">BPM:</label>
+    <input type="number" id="bpm" value="60" min="40" max="160">
+    <button id="startBtn">Iniciar</button>
+    <button id="repeatBtn" disabled>Repetir</button>
+
+    <div id="bloques-container">
+      <div class="bloque" id="bloque0"></div>
+      <div class="bloque" id="bloque1"></div>
+      <div class="bloque" id="bloque2"></div>
+      <div class="bloque" id="bloque3"></div>
+    </div>
+  </section>
+
+  <script src="figuras.js"></script>
+</body>
+</html>
