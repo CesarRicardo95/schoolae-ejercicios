@@ -1,125 +1,119 @@
-// Figuras musicales y sus símbolos unicode simples para visual
-const FIGURAS = {
-  redonda: "𝅝",   // U+1D15D (puede que no se vea en todos los navegadores, usar alternativa)
-  blanca: "𝅗𝅥",
-  negra: "♩",
-  corchea: "♪",
-  fusa: "♫"
+const figuras = {
+  R: { nombre: "Redonda", duracion: 4, simbolo: "𝅝" },
+  B: { nombre: "Blanca", duracion: 2, simbolo: "𝅗𝅥" },
+  N: { nombre: "Negra", duracion: 1, simbolo: "♩" },
+  C: { nombre: "Corchea", duracion: 0.5, simbolo: "♪" },
+  S: { nombre: "Semicorchea", duracion: 0.25, simbolo: "𝅘𝅥𝅯" }
 };
 
-// Para mejor compatibilidad, vamos a usar letras como alternativa
-const FIGURAS_ALT = {
-  redonda: "R",
-  blanca: "B",
-  negra: "N",
-  corchea: "C",
-  fusa: "F"
-};
+let rondaActual = 0;
+let totalRondas = 5;
+let secuencias = [];
+let respuestas = [];
 
-// Secuencia correcta (4 pulsos):
-// 1º Redonda, 2º Negra, 3º Blanca, 4º Fusa
-const SECUENCIA_CORRECTA = ["redonda", "negra", "blanca", "fusa"];
+const startBtn = document.getElementById("startBtn");
+const repeatBtn = document.getElementById("repeatBtn");
+const submitBtn = document.getElementById("submitBtn");
+const bpmInput = document.getElementById("bpm");
+const bloques = [...document.querySelectorAll(".bloque")];
+const selects = [...document.querySelectorAll("select")];
+const resultadoFinal = document.getElementById("resultadoFinal");
+const resultados = document.getElementById("resultados");
+const respuestasSection = document.getElementById("respuestas");
 
-// Opciones (una correcta y dos distractoras)
-const OPCIONES = [
-  ["redonda", "negra", "blanca", "fusa"],        // correcta
-  ["blanca", "corchea", "negra", "fusa"],       // distractora 1
-  ["negra", "negra", "blanca", "corchea"],      // distractora 2
-];
-
-const secuenciaDiv = document.getElementById("secuencia-animada");
-const mostrarOpcionesBtn = document.getElementById("mostrarOpcionesBtn");
-const opcionesDiv = document.getElementById("opciones");
-const resultadoDiv = document.getElementById("resultado");
-
-// Mostrar una figura con efecto activo
-function crearFigura(tipo, activa = false) {
-  const div = document.createElement("div");
-  div.classList.add("figura");
-  if (activa) div.classList.add("activa");
-
-  // Usa símbolo unicode o alternativa
-  // div.textContent = FIGURAS[tipo] || FIGURAS_ALT[tipo];
-  div.textContent = FIGURAS_ALT[tipo] || "?";
-
-  return div;
+function generarSecuencia() {
+  const claves = Object.keys(figuras);
+  return Array.from({ length: 4 }, () => claves[Math.floor(Math.random() * claves.length)]);
 }
 
-// Animar la secuencia, encendiendo cada figura secuencialmente
-function animarSecuencia(secuencia, callback) {
-  secuenciaDiv.innerHTML = "";
-  secuencia.forEach((figura) => {
-    const div = crearFigura(figura);
-    secuenciaDiv.appendChild(div);
-  });
+function mostrarSecuencia(secuencia, bpm) {
+  let tiempoNegra = 60000 / bpm; // milisegundos
+  let t = 0;
 
-  let i = 0;
-  function animarPaso() {
-    if (i > 0) {
-      secuenciaDiv.children[i - 1].classList.remove("activa");
-    }
-    if (i < secuencia.length) {
-      secuenciaDiv.children[i].classList.add("activa");
-      i++;
-      setTimeout(animarPaso, 800); // 800ms por pulso
-    } else {
-      // Apagar última figura
-      if (i > 0) {
-        secuenciaDiv.children[i - 1].classList.remove("activa");
-      }
-      if (callback) callback();
-    }
-  }
-  animarPaso();
-}
-
-// Mostrar opciones para que el usuario elija
-function mostrarOpciones() {
-  opcionesDiv.innerHTML = "";
-  opcionesDiv.style.display = "flex";
-  resultadoDiv.textContent = "";
-
-  OPCIONES.forEach((opcion, idx) => {
-    const opcionDiv = document.createElement("div");
-    opcionDiv.classList.add("opcion");
-    opcionDiv.dataset.idx = idx;
-
-    const contFiguras = document.createElement("div");
-    contFiguras.classList.add("figura-opcion");
-
-    opcion.forEach((fig) => {
-      contFiguras.appendChild(crearFigura(fig));
-    });
-
-    opcionDiv.appendChild(contFiguras);
-    opcionesDiv.appendChild(opcionDiv);
-
-    opcionDiv.addEventListener("click", () => {
-      verificarRespuesta(idx);
-    });
+  secuencia.forEach((clave, i) => {
+    const dur = figuras[clave].duracion * tiempoNegra;
+    setTimeout(() => bloques[i].classList.add("activo"), t);
+    setTimeout(() => bloques[i].classList.remove("activo"), t + dur);
+    t += dur;
   });
 }
 
-// Verificar si la opción elegida es correcta
-function verificarRespuesta(idx) {
-  if (idx === 0) {
-    resultadoDiv.textContent = "¡Correcto! 🎉";
-    resultadoDiv.style.color = "#4caf50";
+function comenzarRonda() {
+  if (rondaActual >= totalRondas) return;
+
+  selects.forEach(sel => sel.value = "");
+  respuestasSection.classList.add("oculto");
+
+  const bpm = parseInt(bpmInput.value);
+  const secuencia = generarSecuencia();
+  secuencias[rondaActual] = secuencia;
+
+  mostrarSecuencia(secuencia, bpm);
+
+  repeatBtn.disabled = false;
+  setTimeout(() => {
+    respuestasSection.classList.remove("oculto");
+  }, secuencia.reduce((acc, clave) => acc + figuras[clave].duracion * 60000 / bpm, 0));
+}
+
+function repetirSecuencia() {
+  mostrarSecuencia(secuencias[rondaActual], parseInt(bpmInput.value));
+}
+
+function procesarRespuesta() {
+  const respuesta = selects.map(sel => sel.value);
+  respuestas[rondaActual] = respuesta;
+
+  rondaActual++;
+
+  if (rondaActual < totalRondas) {
+    setTimeout(comenzarRonda, 1000);
   } else {
-    resultadoDiv.textContent = "Incorrecto, intenta otra vez.";
-    resultadoDiv.style.color = "#f44336";
+    mostrarResultados();
   }
-  // Mostrar colores de retroalimentación
-  Array.from(opcionesDiv.children).forEach((child, i) => {
-    child.classList.remove("correcta", "incorrecta");
-    if (i === 0) child.classList.add("correcta");
-    else child.classList.add("incorrecta");
-  });
 }
 
-mostrarOpcionesBtn.addEventListener("click", () => {
-  mostrarOpcionesBtn.disabled = true;
-  animarSecuencia(SECUENCIA_CORRECTA, () => {
-    mostrarOpciones();
-  });
+function mostrarResultados() {
+  startBtn.disabled = true;
+  repeatBtn.disabled = true;
+  respuestasSection.classList.add("oculto");
+  resultadoFinal.classList.remove("oculto");
+  resultados.innerHTML = "";
+
+  let aciertos = 0;
+
+  for (let i = 0; i < totalRondas; i++) {
+    const sec = secuencias[i];
+    const res = respuestas[i];
+    const div = document.createElement("div");
+    div.classList.add("resultado-item");
+
+    const secText = sec.map(k => figuras[k].simbolo).join(" ");
+    const resText = res.map(k => figuras[k]?.simbolo || "?").join(" ");
+
+    if (JSON.stringify(sec) === JSON.stringify(res)) aciertos++;
+
+    div.innerHTML = `
+      <div><strong>Ronda ${i + 1}:</strong></div>
+      <div>🎯 Secuencia: ${secText}</div>
+      <div>✅ Respuesta: ${resText}</div>
+    `;
+    resultados.appendChild(div);
+  }
+
+  const resumen = document.createElement("div");
+  resumen.innerHTML = `<h3>Total de aciertos: ${aciertos} / ${totalRondas}</h3>`;
+  resultados.appendChild(resumen);
+}
+
+startBtn.addEventListener("click", () => {
+  rondaActual = 0;
+  secuencias = [];
+  respuestas = [];
+  startBtn.disabled = true;
+  resultadoFinal.classList.add("oculto");
+  comenzarRonda();
 });
+
+repeatBtn.addEventListener("click", repetirSecuencia);
+submitBtn.addEventListener("click", procesarRespuesta);
