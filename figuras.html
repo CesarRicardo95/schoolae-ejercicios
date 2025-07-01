@@ -3,123 +3,183 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ejercicio Figuras</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Ejercicio de Figuras Rítmicas</title>
   <style>
-    #lineas-tiempo {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin: 30px auto;
-      max-width: 600px;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 10px;
+      background: #f4f4f4;
+      color: #333;
     }
 
-    #lineas-tiempo h3 {
-      margin: 0;
-      font-size: 18px;
+    header, footer {
+      background: #2e3d4f;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
     }
 
-    #bpm-linea,
-    #figura-linea {
+    section {
+      background: white;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px #ccc;
+    }
+
+    .bloques {
       display: flex;
-      gap: 6px;
       justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
     }
 
-    .pulso,
-    .pulso-figura {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
+    .bloque {
+      width: 60px;
+      height: 60px;
       background: lightgray;
-      transition: background 0.2s ease;
+      border-radius: 6px;
+      transition: background 0.2s;
     }
 
-    .pulso.activo,
-    .pulso-figura.activo {
-      background: #2ecc71;
+    .bloque.activo {
+      background: #4caf50;
+    }
+
+    .linea {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin: 15px 0;
+    }
+
+    .pulso {
+      width: 12px;
+      height: 12px;
+      background: gray;
+      border-radius: 50%;
+      transition: background 0.2s;
+    }
+
+    .pulso.activo {
+      background: #2196f3;
+    }
+
+    .seleccion {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    select {
+      font-size: 16px;
+      padding: 6px;
+    }
+
+    button {
+      margin: 10px 5px;
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background-color: #2e3d4f;
+      color: white;
+      transition: background 0.3s;
+    }
+
+    button:disabled {
+      background-color: #999;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #445b75;
+    }
+
+    #resultado {
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    label {
+      font-size: 16px;
+    }
+
+    input[type="number"] {
+      font-size: 16px;
+      padding: 4px 8px;
+      width: 80px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Ejercicio de Figuras</h1>
-    <p>Identifica la secuencia de figuras rítmicas.</p>
+    <h1>Figuras Rítmicas</h1>
+    <p>Identifica las figuras observando su duración en tiempo real.</p>
   </header>
 
-  <main>
-    <section>
+  <section>
+    <div>
       <label for="bpm">BPM:</label>
       <input type="number" id="bpm" min="40" max="160" value="60" />
+    </div>
 
-      <div style="margin-top: 20px">
-        <button id="startBtn">Iniciar</button>
-        <button id="replayBtn" disabled>Repetir</button>
-        <button id="submitBtn" disabled>Responder</button>
-        <button id="nextBtn" disabled>Siguiente</button>
-      </div>
+    <div id="bloques-top" class="bloques"></div>
 
-      <div id="lineas-tiempo">
-        <h3>Línea de pulso</h3>
-        <div id="bpm-linea"></div>
+    <div id="bpm-linea" class="linea"></div>
+    <div id="figura-linea" class="linea"></div>
 
-        <h3>Línea de figura</h3>
-        <div id="figura-linea"></div>
-      </div>
+    <div class="seleccion">
+      <select class="select-figura">
+        <option value="">---</option>
+        <option value="redonda">Redonda</option>
+        <option value="blanca">Blanca</option>
+        <option value="negra">Negra</option>
+        <option value="corchea">Corchea</option>
+        <option value="semicorchea">Semicorchea</option>
+      </select>
+      <select class="select-figura">
+        <option value="">---</option>
+        <option value="redonda">Redonda</option>
+        <option value="blanca">Blanca</option>
+        <option value="negra">Negra</option>
+        <option value="corchea">Corchea</option>
+        <option value="semicorchea">Semicorchea</option>
+      </select>
+      <select class="select-figura">
+        <option value="">---</option>
+        <option value="redonda">Redonda</option>
+        <option value="blanca">Blanca</option>
+        <option value="negra">Negra</option>
+        <option value="corchea">Corchea</option>
+        <option value="semicorchea">Semicorchea</option>
+      </select>
+      <select class="select-figura">
+        <option value="">---</option>
+        <option value="redonda">Redonda</option>
+        <option value="blanca">Blanca</option>
+        <option value="negra">Negra</option>
+        <option value="corchea">Corchea</option>
+        <option value="semicorchea">Semicorchea</option>
+      </select>
+    </div>
 
-      <div style="margin-top: 30px">
-        <div style="display: flex; gap: 10px; justify-content: center;">
-          <div class="bloque">1</div>
-          <div class="bloque">2</div>
-          <div class="bloque">3</div>
-          <div class="bloque">4</div>
-        </div>
+    <div style="margin-top: 15px;">
+      <button id="startBtn">Iniciar</button>
+      <button id="replayBtn" disabled>Repetir</button>
+      <button id="submitBtn" disabled>Enviar</button>
+      <button id="nextBtn" disabled>Siguiente</button>
+    </div>
 
-        <div style="margin-top: 20px">
-          <select class="select-figura">
-            <option value="">Selecciona</option>
-            <option value="redonda">Redonda</option>
-            <option value="blanca">Blanca</option>
-            <option value="negra">Negra</option>
-            <option value="corchea">Corchea</option>
-            <option value="semicorchea">Semicorchea</option>
-          </select>
-
-          <select class="select-figura">
-            <option value="">Selecciona</option>
-            <option value="redonda">Redonda</option>
-            <option value="blanca">Blanca</option>
-            <option value="negra">Negra</option>
-            <option value="corchea">Corchea</option>
-            <option value="semicorchea">Semicorchea</option>
-          </select>
-
-          <select class="select-figura">
-            <option value="">Selecciona</option>
-            <option value="redonda">Redonda</option>
-            <option value="blanca">Blanca</option>
-            <option value="negra">Negra</option>
-            <option value="corchea">Corchea</option>
-            <option value="semicorchea">Semicorchea</option>
-          </select>
-
-          <select class="select-figura">
-            <option value="">Selecciona</option>
-            <option value="redonda">Redonda</option>
-            <option value="blanca">Blanca</option>
-            <option value="negra">Negra</option>
-            <option value="corchea">Corchea</option>
-            <option value="semicorchea">Semicorchea</option>
-          </select>
-        </div>
-
-        <div id="resultado"></div>
-      </div>
-    </section>
-  </main>
+    <div id="resultado"></div>
+  </section>
 
   <footer>
-    <p>&copy; 2025 Schoolae Cantorum</p>
+    &copy; 2025 Schoolae Cantorum
   </footer>
 
   <script src="figuras.js"></script>
